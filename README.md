@@ -1,46 +1,55 @@
-# Mohit Kumar — Portfolio (Full Stack)
+# Mohit Kumar — Portfolio
 
-This project has two parts:
+A React + Vite portfolio site.
 
-- **`frontend/`** — the React + Vite portfolio site
-- **`backend/`** — the Express API that powers the contact form and serves portfolio data as JSON
+## Run locally
 
-## Quick start
-
-Open two terminals.
-
-**Terminal 1 — backend**
 ```bash
-cd backend
 npm install
 cp .env.example .env
 npm run dev
 ```
-Runs on http://localhost:5000
 
-**Terminal 2 — frontend**
+Then open the local URL it prints (usually http://localhost:5173).
+
+## Backend
+
+The contact form on this site posts to a separate backend API (see the
+`portfolio-backend` project). Run that alongside this frontend:
+
 ```bash
-cd frontend
+cd ../portfolio-backend
 npm install
 cp .env.example .env
 npm run dev
 ```
-Runs on http://localhost:5173
 
-Open http://localhost:5173 — the contact form at the bottom of the page now
-actually sends messages to the backend, which validates them, saves them to
-`backend/data/messages.json`, and optionally emails you (see
-`backend/README.md` for enabling email).
+It runs on `http://localhost:5000` by default, matching `VITE_API_URL` in
+`.env.example`. In production, deploy the backend separately and set
+`VITE_API_URL` to its live URL.
 
-## Deploying
+## Build for production
 
-Deploy the two parts separately:
-- **Frontend** → Vercel or Netlify (see `frontend/README.md`)
-- **Backend** → Render or Railway (see `backend/README.md`)
+```bash
+npm run build
+```
 
-After deploying, set:
-- In the frontend's environment: `VITE_API_URL` = your live backend URL
-- In the backend's environment: `CORS_ORIGIN` = your live frontend URL
+This creates a `dist/` folder with the static site, ready to deploy anywhere.
 
-Full details, API reference, and troubleshooting are in each folder's own
-README.
+## Deploy
+
+**Vercel (easiest)**
+1. Push this project to a GitHub repo.
+2. Go to https://vercel.com → "Add New Project" → import the repo.
+3. Vercel auto-detects Vite. Click Deploy.
+
+**Netlify**
+1. Push to GitHub.
+2. Go to https://app.netlify.com → "Add new site" → "Import an existing project".
+3. Build command: `npm run build`, publish directory: `dist`.
+
+**GitHub Pages**
+1. `npm install --save-dev gh-pages`
+2. Add to `package.json` scripts: `"deploy": "vite build && gh-pages -d dist"`
+3. Set `base: "/your-repo-name/"` in `vite.config.js`
+4. Run `npm run deploy`
